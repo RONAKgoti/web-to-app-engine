@@ -7,17 +7,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # v3 હતું ત્યાં v4 કર્યું
+      - uses: actions/checkout@v4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
+      - name: Create Assets Directory
+        run: mkdir -p assets  # ખાતરી કરશે કે ફોલ્ડર છે જ
+
       - name: Update Web URL
         run: |
-          mkdir -p assets
           echo "${{ github.event.client_payload.url }}" > assets/url.txt
+          cat assets/url.txt # ચેક કરવા માટે કે URL લખાયું છે કે નહીં
 
       - name: Install dependencies
         run: flutter pub get
@@ -26,7 +29,7 @@ jobs:
         run: flutter build apk --release
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4 # અહીં પણ v3 નું v4 કરી દીધું
+        uses: actions/upload-artifact@v4
         with:
           name: Generated-App
           path: build/app/outputs/flutter-apk/app-release.apk
