@@ -1,0 +1,17 @@
+name: web_to_app_engine
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.10.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/url.txt
