@@ -1,0 +1,32 @@
+name: Build Website APK
+on:
+  repository_dispatch:
+    types: [build-app]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Update Web URL
+        run: |
+          mkdir -p assets
+          echo "${{ github.event.client_payload.url }}" > assets/url.txt
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Generated-App
+          path: build/app/outputs/flutter-apk/app-release.apk
